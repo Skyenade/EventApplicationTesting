@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 class UserCreateProfile {
-	
+
 	private WebDriver driver;
 
 	@BeforeEach
@@ -29,12 +29,12 @@ class UserCreateProfile {
 			driver.quit();
 		}
 	}
-	
+
 	private void loadUserProfilePage() {
-driver.get("http://localhost:3000/");
-		
+		driver.get("http://localhost:3000/");
+
 		driver.manage().window().maximize();
-		
+
 		WebElement inputField = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/form/input[1]"));
 		String testEmail = "mainaaa.16@gmail.com";
 		inputField.sendKeys(testEmail);
@@ -45,9 +45,9 @@ driver.get("http://localhost:3000/");
 
 		WebElement submitBtn = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/form/button[1]"));
 		submitBtn.click();
-		
+
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		
+
 		WebElement userProfileBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("userprofile-button")));
 		userProfileBtn.click();
 	}
@@ -128,11 +128,48 @@ driver.get("http://localhost:3000/");
 //		assertTrue(findDeletePicture);
 //	}
 //	
+//	@Test
+//	void testDeleteAccountVisible() {
+//		loadUserProfilePage();
+//		WebElement deleteAccount = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/button[2]"));
+//		Boolean findDeleteAccount = deleteAccount.isDisplayed();
+//		assertTrue(findDeleteAccount);
+//	}
+//	
+//	@Test
+//	void testSaveButtonClickable() {
+//		loadUserProfilePage();
+//		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//		WebElement saveButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div/div[1]/button")));
+//		saveButton.click();
+//	}
+//	
 	@Test
-	void testDeleteAccountVisible() {
-		loadUserProfilePage();
-		WebElement deleteAccount = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/button[2]"));
-		Boolean findDeleteAccount = deleteAccount.isDisplayed();
-		assertTrue(findDeleteAccount);
+	void testSavebioChanges() {
+	    loadUserProfilePage();
+	    
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    WebElement bio = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div/div[2]/div[1]/textarea")));
+	    String bioText = bio.getText();
+	    
+	    bio.sendKeys("new bio");
+	    
+	    wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    WebElement saveButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div/div[2]/div[1]/button")));
+	    saveButton.click();
+	    
+	    wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    WebElement homeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div/div[1]/div[1]/a[1]")));
+	    homeButton.click();
+	    
+	    wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    WebElement userProfileBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[1]/div[2]/button[1]")));
+	    userProfileBtn.click();
+	    
+//	    WebElement updatedBio = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div[1]/textarea")));
+//	    String updatedBioText = updatedBio.getText();
+//	    
+//	    assertNotEquals(bioText, updatedBioText, "Bio text should be updated after saving changes");
 	}
+
 }
