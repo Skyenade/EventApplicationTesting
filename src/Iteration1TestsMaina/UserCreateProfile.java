@@ -120,11 +120,19 @@ driver.get("http://localhost:3000/");
 //		assertTrue(findChooseFile);
 //	}
 //	
+//	@Test
+//	void testDeletePictureVisible() {
+//		loadUserProfilePage();
+//		WebElement deletePicture = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/button[1]"));
+//		Boolean findDeletePicture = deletePicture.isDisplayed();
+//		assertTrue(findDeletePicture);
+//	}
+//	
 	@Test
-	void testDeletePictureVisible() {
+	void testDeleteAccountVisible() {
 		loadUserProfilePage();
-		WebElement chooseFile = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/input"));
-		Boolean findChooseFile = chooseFile.isDisplayed();
-		assertTrue(findChooseFile);
+		WebElement deleteAccount = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/button[2]"));
+		Boolean findDeleteAccount = deleteAccount.isDisplayed();
+		assertTrue(findDeleteAccount);
 	}
 }
