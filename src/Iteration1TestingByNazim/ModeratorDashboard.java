@@ -9,7 +9,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
 
-Public class ModeratorDashboard {
+
+public class ModeratorDashboard {
+
 
     private WebDriver driver;
 
