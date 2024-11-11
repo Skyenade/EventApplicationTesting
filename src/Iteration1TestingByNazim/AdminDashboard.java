@@ -1,4 +1,7 @@
-package Iteration1TestsMaina;
+package Iteration1TestingByNazim;
+
+
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
@@ -7,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
 
-public class AdminDashboardTests {
+public class AdminDashboard {
 
     private WebDriver driver;
 
