@@ -20,7 +20,7 @@ class SigunUpUserTesing {
 
     @BeforeEach
     void setUp() {
-        driver = new ChromeDriver();
+        driver = new ChromeDriver();	
     }
 
     private void loadHomePage() {
