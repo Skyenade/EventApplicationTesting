@@ -31,7 +31,9 @@ class Notifications {
 //    }
 //    
     private void ModeratorHome() {
+
     	   driver.get("http://localhost:3000");  // Update to use a file URI
+
     	   WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     	   
     	   	WebElement inputField = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/form/input[1]"));
