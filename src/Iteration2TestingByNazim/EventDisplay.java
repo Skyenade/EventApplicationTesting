@@ -1,8 +1,9 @@
-package Iteration1TestingByNazim;
+package Iteration2TestingByNazim;
 
+public class EventDisplay {
+    
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
 
-class FlaggedContentModerator {
+public class EventDisplay {
 
     private WebDriver driver;
 
@@ -44,22 +45,16 @@ class FlaggedContentModerator {
     }
 
     @Test
-    void testModeratorAccessToFlaggedPostsDashboard() {
+    void testEventsAreVisible() {
         loadLoginPage();
-        login("moderator@gmail.com", "Moderator");
+        login("test01@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains("/ModeratorHome"));
-        
-        assertTrue(driver.getCurrentUrl().contains("/ModeratorHome"), "The moderator should be redirected to the Moderator Home page.");
 
-        WebElement flaggedContentItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div[3]/div[2]/div[2]/ul/li[3]")));
-        assertTrue(flaggedContentItem.isDisplayed(), "Flagged content should be visible in the list on the Moderator dashboard.");
+        WebElement firstEvent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div[2]/div/div[1]")));
+        WebElement secondEvent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div[2]/div/div[2]")));
+
+        assertTrue(firstEvent.isDisplayed(), "First event should be visible.");
+        assertTrue(secondEvent.isDisplayed(), "Second event should be visible.");
     }
-
-} {
-
-
-
-    
 }

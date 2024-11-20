@@ -13,6 +13,9 @@ import java.time.Duration;
 public class ModeratorDashboard {
 
 
+public class ModeratorDashboard {
+
+
     private WebDriver driver;
 
     @BeforeEach
