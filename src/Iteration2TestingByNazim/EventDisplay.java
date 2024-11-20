@@ -1,4 +1,8 @@
-package Iteration1TestsMaina;
+package Iteration2TestingByNazim;
+
+public class EventDisplay {
+    
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
@@ -7,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
 
-public class AdminDashboardTests {
+public class EventDisplay {
 
     private WebDriver driver;
 
@@ -41,44 +45,16 @@ public class AdminDashboardTests {
     }
 
     @Test
-    void testCorrectLogin() {
+    void testEventsAreVisible() {
         loadLoginPage();
-        login("admin@gmail.com", "admin1234");
-        assertEquals("http://localhost:3000/AdminHome", driver.getCurrentUrl());
-    }
+        login("test01@gmail.com", "123456");
 
-    @Test
-    void testWrongEmail() {
-        loadLoginPage();
-        login("wrong@gmail.com", "admin1234");
-        assertEquals("http://localhost:3000/AdminHome", driver.getCurrentUrl());
-    }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    @Test
-    void testWrongPassword() {
-        loadLoginPage();
-        login("admin@gmail.com", "wrongpassword");
-        assertNotEquals("http://localhost:3000/AdminHome", driver.getCurrentUrl());
-    }
+        WebElement firstEvent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div[2]/div/div[1]")));
+        WebElement secondEvent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div[2]/div/div[2]")));
 
-    @Test
-    void testEmptyEmail() {
-        loadLoginPage();
-        login("", "admin1234");
-        assertNotEquals("http://localhost:3000/AdminHome", driver.getCurrentUrl());
-    }
-
-    @Test
-    void testEmptyPassword() {
-        loadLoginPage();
-        login("admin@gmail.com", "");
-        assertNotEquals("http://localhost:3000/AdminHome", driver.getCurrentUrl());
-    }
-
-    @Test
-    void testEmptyCredentials() {
-        loadLoginPage();
-        login("", "");
-        assertNotEquals("http://localhost:3000/AdminHome", driver.getCurrentUrl());
+        assertTrue(firstEvent.isDisplayed(), "First event should be visible.");
+        assertTrue(secondEvent.isDisplayed(), "Second event should be visible.");
     }
 }
