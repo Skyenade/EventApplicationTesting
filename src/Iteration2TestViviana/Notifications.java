@@ -32,11 +32,15 @@ class Notifications {
 //    
     private void ModeratorHome() {
 
-    	   driver.get("http://localhost:3000");  // Update to use a file URI
-
 
     	   driver.get("http://localhost:3000");  // Update to use a file URI
 
+
+    	   driver.get("http://localhost:3000");  // Update to use a file URI
+
+
+
+    	   driver.get("http://localhost:3001");  // Update to use a file URI
 
     	   WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     	   
