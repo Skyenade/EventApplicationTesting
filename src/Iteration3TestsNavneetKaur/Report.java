@@ -9,7 +9,7 @@ public class Report {
     private String status;
     private String reportedOn;
 
-    // Constructor, getters, and setters
+   
     public Report(String type, String contentId, String reason, String reportedBy, String status, String reportedOn) {
         this.type = type;
         this.contentId = contentId;
