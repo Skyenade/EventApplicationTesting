@@ -83,6 +83,18 @@ class ModeratorSignOut {
 	}
 	
 	@Test
+	void testSignOutButtonText() {
+		loadHomePage();
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		WebElement signOutButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div/div[1]/div[2]/button[2]")));
+		String buttonText = signOutButton.getText();;
+		
+		assertEquals(buttonText, "Sign Out");
+	}
+	
+	@Test
 	void testSignOutButton() {
 		loadHomePage();
 		
