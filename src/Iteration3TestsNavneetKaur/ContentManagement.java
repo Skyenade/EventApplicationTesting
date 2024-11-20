@@ -159,7 +159,7 @@ class ContentManagement {
 	            
 	            if (rows.isEmpty()) {
 	                WebElement noReportsMessage = driver.findElement(By.id("Remove"));
-	                assertNotNull(noReportsMessage.isDisplayed()); // This will pass if Remove button is visible, will fail because noReportsMessage will be null.
+	                assertNotNull(noReportsMessage.isDisplayed()); 
 	                return;
 	            }
 	            
