@@ -56,7 +56,10 @@ class FlaggedContentModerator {
         WebElement flaggedContentItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div[3]/div[2]/div[2]/ul/li[3]")));
         assertTrue(flaggedContentItem.isDisplayed(), "Flagged content should be visible in the list on the Moderator dashboard.");
     }
+
 } {
+
+
 
     
 }
