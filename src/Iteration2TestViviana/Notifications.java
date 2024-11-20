@@ -23,6 +23,7 @@ class Notifications {
         driver = new ChromeDriver();
     }
 
+
    @AfterEach
    void tearDown() {
        if (driver != null) {
