@@ -17,8 +17,5 @@
 
 
 
-	<classpathentry kind="lib" path="C:/Users/JAZZ-PC/Downloads/selenium-server-4.25.0.jar"/>
-
-
 	<classpathentry kind="output" path="bin"/>
 </classpath>

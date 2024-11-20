@@ -53,17 +53,21 @@ public class ModeratorDashboard {
     
     
     @Test
-    void testButtonIsClickable() {
-        WebElement createEventButton = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div/button"));
-        assertTrue(createEventButton.isEnabled(), "Create Event button should be enabled");
-        assertTrue(createEventButton.isDisplayed(), "Create Event button should be displayed");
-        String buttonState = createEventButton.getAttribute("disabled");
+    void testRequestButton() {
+        WebElement Request_Button = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div/button"));
+        assertTrue(Request_Button.isEnabled(), "Create Event button should be enabled");
+        assertTrue(Request_Button.isDisplayed(), "Create Event button should be displayed");
+        String buttonState = Request_Button.getAttribute("disabled");
         assertNull(buttonState);
-        createEventButton.click();
+        Request_Button.click();
+
+       
     }
     
    
     @Test
+//     public void testFLagContentTable_Visibility() {
+
     public void testTableVisibility() {
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div/div/div/div[2]/div/table")));
@@ -97,6 +101,7 @@ public class ModeratorDashboard {
             e.printStackTrace();
         }
     }
+
 
     @Test
     public void testUserSespension() {
