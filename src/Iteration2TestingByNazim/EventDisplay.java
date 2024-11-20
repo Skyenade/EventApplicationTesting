@@ -1,6 +1,5 @@
 package Iteration2TestingByNazim;
 
-    
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;

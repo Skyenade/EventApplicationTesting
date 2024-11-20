@@ -57,6 +57,5 @@ class FlaggedContentModerator {
         assertTrue(flaggedContentItem.isDisplayed(), "Flagged content should be visible in the list on the Moderator dashboard.");
     }
 
-
     
 }

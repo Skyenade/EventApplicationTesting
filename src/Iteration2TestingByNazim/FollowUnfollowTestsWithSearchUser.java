@@ -44,7 +44,8 @@ public class FollowUnfollowTestsWithSearchUser {
     @Test
     void testFollowUnfollowBySearchUser() {
         loadLoginPage();
-        login("test01@gmail.com", "123456");
+
+        login("user@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
