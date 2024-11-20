@@ -66,7 +66,9 @@ public class ModeratorDashboard {
     
    
     @Test
-    public void testFLagContentTable_Visibility() {
+//     public void testFLagContentTable_Visibility() {
+
+    public void testTableVisibility() {
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div/div/div/div[2]/div/table")));
             WebElement table = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div/table"));
@@ -99,7 +101,7 @@ public class ModeratorDashboard {
             e.printStackTrace();
         }
     }
-    
+
 
     @Test
     public void testUserSespension() {
