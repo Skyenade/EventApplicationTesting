@@ -23,12 +23,12 @@ class ViewEventsCreatedByMe {
 	        driver = new ChromeDriver();
 	    }
 
-//	    @AfterEach
-//	    void tearDown() {
-//	        if (driver != null) {
-//	            driver.quit();
-//	        }
-//	    }
+	    @AfterEach
+	    void tearDown() {
+	        if (driver != null) {
+	            driver.quit();
+	        }
+	    }
 	  
 	    private void MyEvents() {
 	    	   driver.get("http://localhost:3000");  // Update to use a file URI

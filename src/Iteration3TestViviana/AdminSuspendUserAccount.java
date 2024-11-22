@@ -26,12 +26,12 @@ class AdminSuspendUserAccount {
 	driver = new ChromeDriver();
  }
 			
-//    @AfterEach
-//    void tearDown() {
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
+    @AfterEach
+    void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 			  
 	 private void loginAsAdmin() {
 	        driver.get("http://localhost:3000"); // 
