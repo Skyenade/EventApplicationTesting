@@ -96,13 +96,13 @@ class AdminSuspendUserAccount {
 
 	        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 	        String alertText = alert.getText(); 
-	        assertTrue(alertText.contains("Are you sure you want to suspend this user?"), "El mensaje de confirmación no coincide.");
-	        alert.accept(); //Accept the alert to save changes
+	        assertTrue(alertText.contains("Are you sure you want to suspend this user?"), "Confirmation message does not match.");
+	        alert.accept(); 
 
 	        // Validate that the URL redirects to the user management page
 	        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/UserManagement"));
 	        String currentUrl = driver.getCurrentUrl();
-	        assertEquals("http://localhost:3000/UserManagement", currentUrl, "No se redirigió correctamente a la página de gestión de usuarios.");
+	        assertEquals("http://localhost:3000/UserManagement", currentUrl, "You were not redirected to the user management page correctly..");
 	    }
 
 	    
