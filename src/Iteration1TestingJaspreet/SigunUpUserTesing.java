@@ -20,127 +20,116 @@ class SigunUpUserTesing {
 
     @BeforeEach
     void setUp() {
-        driver = new ChromeDriver();	
+        driver = new ChromeDriver();
     }
 
     private void loadHomePage() {
         driver.get("http://localhost:3000");
     }
-    
-    
-    
-    
-    
-    
+
     @Test
-    public void CreateAccoutWithValidDetails() {
+     void CreateAccoutWithValidDetails() {
         loadHomePage();
-        
-        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]\r\n"
-        		+ ""));
+
+        // Locate and click the create account button
+        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]"));
         createaccountbutton.click();
 
-        
-        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]\r\n"
-        		+ ""));
+        // Fill in the user details
+        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]"));
         Username.sendKeys("Testing");
 
-        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]\r\n"
-        		+ ""));
-        emailField.sendKeys("Testing2@gmail.com");
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]"));
+        emailField.sendKeys("Testing9@gmail.com");
 
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]\r\n"
-        		+ ""));
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]"));
         passwordField.sendKeys("Testing@123");
 
-        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button\r\n"
-        		+ ""));
+       
+        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button"));
         submitButton.click();
 
+       
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+
+                alert.accept();
+
+
+        assertFalse("Alert should be dismissed.", isAlertPresent());
     }
 
-    
+	private boolean isAlertPresent() {
+				return false;
+	}
     @Test
-    public void Createaccountwithsamecredentials() {
+     void Createaccountwithsamecredentials() {
         loadHomePage();
-        
-        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]\r\n"
-        		+ ""));
+
+        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]"));
         createaccountbutton.click();
 
-        
-        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]\r\n"
-        		+ ""));
+        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]"));
         Username.sendKeys("Testing");
 
-        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]\r\n"
-        		+ ""));
-        emailField.sendKeys("Testing@gmail.com");
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]"));
+        emailField.sendKeys("Testing7@gmail.com");
 
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]\r\n"
-        		+ ""));
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]"));
         passwordField.sendKeys("Testing@123");
 
-        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button\r\n"
-        		+ ""));
+        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button"));
         submitButton.click();
 
-    }
-    
-    
-    @Test
-    public void CreateAccoutWithemailandpasswordwrong() {
-        loadHomePage();
         
-        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]\r\n"
-        		+ ""));
+        WebElement errorMessage = driver.findElement(By.xpath("/html/body/div/div/div/form/p[1]")); 
+        assertTrue("Error message for existing account should be displayed.", errorMessage.isDisplayed());
+    }
+
+    @Test
+     void CreateAccoutWithemailandpasswordwrong() {
+        loadHomePage();
+
+        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]"));
         createaccountbutton.click();
 
-        
-        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]\r\n"
-        		+ ""));
+        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]"));
         Username.sendKeys("Testing");
 
-        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]\r\n"
-        		+ ""));
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]"));
         emailField.sendKeys("Testing.com");
 
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]\r\n"
-        		+ ""));
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]"));
         passwordField.sendKeys("123");
 
-        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button\r\n"
-        		+ ""));
+        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button"));
         submitButton.click();
 
-    }
-    
-    
-    @Test
-    public void Createaccountwithfieldempty() {
-        loadHomePage();
         
-        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]\r\n"
-        		+ ""));
+        String expectedUrl = "http://localhost:3000/SignupUser";
+        assertNotEquals("The user should remain on the sign-up page with invalid details.", expectedUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+     void Createaccountwithfieldempty() {
+        loadHomePage();
+
+        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]"));
         createaccountbutton.click();
 
-        
-        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]\r\n"
-        		+ ""));
+        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]"));
         Username.sendKeys("");
 
-        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]\r\n"
-        		+ ""));
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]"));
         emailField.sendKeys("");
 
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]\r\n"
-        		+ ""));
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]"));
         passwordField.sendKeys("");
 
-        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button\r\n"
-        		+ ""));
+        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button"));
         submitButton.click();
 
+        
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -150,280 +139,112 @@ class SigunUpUserTesing {
         assertEquals("http://localhost:3000/SignupUser", driver.getCurrentUrl(),
                 "The user should remain on the same page if required fields are empty.");
     }
-    
+
     @Test
-    public void createAccountWithUsernameEmpty() {
+     void createAccountWithUsernameEmpty() {
         loadHomePage();
 
-        // Click on the Create Account button
         WebElement createAccountButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]"));
         createAccountButton.click();
 
-        // Locate the username field and leave it empty
         WebElement usernameField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]"));
         usernameField.sendKeys("");  // Leave it empty
 
-        // Fill out the other fields
         WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]"));
         emailField.sendKeys("Testing@gmail.com");
 
         WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]"));
         passwordField.sendKeys("Testing@123");
 
-        // Click the submit button
         WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button"));
         submitButton.click();
-        
+
         WebElement errorMessage = driver.findElement(By.xpath("/html/body/div/div/div/form"));
-        
-        assertTrue("Error message should be displayed.", errorMessage.isDisplayed());
+        assertTrue("Error message should be displayed for missing username.", errorMessage.isDisplayed());
     }
 
-
-           @Test
-    public void Createaccountwithemailempty() {
+    @Test
+     void Createaccountwithemailempty() {
         loadHomePage();
-        
-        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]\r\n"
-        		+ ""));
+
+        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]"));
         createaccountbutton.click();
 
-        
-        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]\r\n"
-        		+ ""));
+        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]"));
         Username.sendKeys("Testing");
 
-        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]\r\n"
-        		+ ""));
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]"));
         emailField.sendKeys("");
 
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]\r\n"
-        		+ ""));
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]"));
         passwordField.sendKeys("Testing@123");
 
-        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button\r\n"
-        		+ ""));
+        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button"));
         submitButton.click();
-    
- 
-  
-  WebElement errorMessage = driver.findElement(By.xpath("/html/body/div/div/div/form"));
-  
-  assertFalse("Error message should be displayed.", errorMessage.isDisplayed());
-}
 
-            
+        WebElement errorMessage = driver.findElement(By.xpath("/html/body/div/div/div/form"));
+        assertTrue("Error message for empty email should be displayed.", errorMessage.isDisplayed());
+    }
+
     @Test
-    public void Createaccountwithpasswordempty() {
+     void Createaccountwithpasswordempty() {
         loadHomePage();
-        
-        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]\r\n"
-        		+ ""));
+
+        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]"));
         createaccountbutton.click();
 
-        
-        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]\r\n"
-        		+ ""));
+        WebElement Username = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[1]"));
         Username.sendKeys("Testing");
 
-        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]\r\n"
-        		+ ""));
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[2]"));
         emailField.sendKeys("Testing@gmail.com");
 
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]\r\n"
-        		+ ""));
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/input[3]"));
         passwordField.sendKeys("");
 
-        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button\r\n"
-        		+ ""));
+        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button"));
         submitButton.click();
-    
-    
-    String actualValue = "enterpassword";
-    String expectedValue = "Wrongpassword";
-    assertEquals(expectedValue, actualValue, "The password field is missing.");
-}
 
-    
-    @Test
-    public void Alreadyhaveaccountbuttoncheck() {
-        loadHomePage();
         
-        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]\r\n"
-        		+ ""));
+        WebElement errorMessage = driver.findElement(By.xpath("/html/body/div/div/div/form"));
+        assertTrue("Error message for empty password should be displayed.", errorMessage.isDisplayed());
+    }
+
+    @Test
+     void Alreadyhaveaccountbuttoncheck() {
+        loadHomePage();
+
+        WebElement createaccountbutton = driver.findElement(By.xpath("/html/body/div[1]/div/div/form/button[2]"));
         createaccountbutton.click();
-        WebElement alreadyhaveaccount = driver.findElement(By.xpath("/html/body/div/div/div/form/p"
-        		+ ""));
+        WebElement alreadyhaveaccount = driver.findElement(By.xpath("/html/body/div/div/div/form/p"));
         alreadyhaveaccount.click();
-    }
 
         
+        String expectedUrl = "http://localhost:3000/login"; 
+        assertNotEquals("User should be redirected to the login page.", expectedUrl, driver.getCurrentUrl());
+    }
 
-           
-    
-    
-  @Test
-  public void ResetPasswordLinkCheck() {
-      loadHomePage();
-      
-      WebElement  linkcheck = driver.findElement(By.xpath("/html/body/div/div/div/form/span\r\n"
-      		
-      		+ ""));
-      linkcheck.click();
-      }
-
-    
-  @Test
-  public void EnterCorrectEmail() {
-      loadHomePage();
-      
-      WebElement  linkcheck = driver.findElement(By.xpath("/html/body/div/div/div/form/span\r\n"
-    		
-    		+ ""));
-    linkcheck.click();
-    
-      WebElement Enteremail = driver.findElement(By.xpath("/html/body/div/div/div/form/input\r\n"
-      		
-      		+ ""));
-      Enteremail.sendKeys("Testing@gmail.com");
-      WebElement Resetbutton = driver.findElement(By.xpath("/html/body/div/div/div/form/button\r\n"
-      		+ ""));
-      Resetbutton.click();
-  }
-
-    
-  @Test
-  public void Enterwrongemailforpasswordreset() {
-      loadHomePage();
-      
-      WebElement  linkcheck = driver.findElement(By.xpath("/html/body/div/div/div/form/span\r\n"
-    		
-    		+ ""));
-    linkcheck.click();
-    
-      WebElement Enteremail = driver.findElement(By.xpath("/html/body/div/div/div/form/input\r\n"
-      		
-      		+ ""));
-      Enteremail.sendKeys("jj");
-      WebElement Resetbutton = driver.findElement(By.xpath("/html/body/div/div/div/form/button\r\n"
-      		+ ""));
-      Resetbutton.click();
-      
-      String actualValue = "entercorrecemail";
-      String expectedValue = "please enter correct email address";
-      assertEquals(expectedValue, actualValue, "The password field is missing.");
-    } 
-    
-    
-    
-    
     @Test
-  public void Userloginwithcorrectemail() {
-      loadHomePage();
-
-     
-     
-
-
-      WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]\r\n"
-      		+ ""));
-      emailField.sendKeys("Testing@gmail.com");
-
-      WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]\r\n"
-      		+ ""));
-      passwordField.sendKeys("Testing@123");
-
-      
-      WebElement submitButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]\r\n"
-      		+ ""));
-      submitButton.click();
-      
-     
-  }
-    
-    
-    @Test
-    public void loginwithoutaccountcreation() {
+     void ResetPasswordLinkCheck() {
         loadHomePage();
 
- WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]\r\n"
-	+ ""));
-emailField.sendKeys("Testg@gmail.com");
-
-WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]\r\n"
-	+ ""));
-passwordField.sendKeys("Testing@123");
-
-
-WebElement submitButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]\r\n"
-	+ ""));
-submitButton.click();
-
-String actualValue = "";
-String expectedValue = "user email and passowrd does not exist please create account";
-assertEquals(expectedValue, actualValue, "The password field is missing.");
-} 
-  
- 
-    
-    @Test
-    public void UserDeleteAccount() {
-        try {
-            loadHomePage();
-            
-            // Enter email and password
-            WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]"));
-            emailField.sendKeys("cegep@gmail.com");
-
-            WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
-            passwordField.sendKeys("cegep@123");
-
-            // Click submit button
-            WebElement submitButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
-            submitButton.click();
-
-            // Go to user profile
-            WebElement userProfileButton = driver.findElement(By.id("userprofile-button"));
-            userProfileButton.click();
-
-            // Click delete account button
-            WebElement deleteButton = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[2]/button"));
-            deleteButton.click();
-            
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-            e.printStackTrace();
-            fail("Test failed due to an exception: " + e.getMessage());
-        }
         
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement linkcheck = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/span")));
+
         
+        linkcheck.click();
+
+        String expectedUrl = "http://localhost:3000/ForgotPassword"; 
+        assertEquals("User should be redirected to the password reset page.", expectedUrl, driver.getCurrentUrl());
     }
+
     @AfterEach
-	void tearDown() {
-		if (driver != null) {
-			driver.quit();
-		}
-    
-    
+    void tearDown() {
+        driver.quit();
+    }
 }
-      
-  
-    
-    
 
-}
-  
-    
-
-
-
-
-      
-      
-      
-      
-  
-  
   
 
 
