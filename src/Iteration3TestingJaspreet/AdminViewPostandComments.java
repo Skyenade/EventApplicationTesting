@@ -28,130 +28,123 @@ class AdminViewPostandComments {
         driver.get("http://localhost:3000");
     }
 
-    @Test
-    void loginTest() {
-        loadHomePage();
-
-        driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]")).sendKeys("admin@gmail.com");
-        driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]")).sendKeys("admin1234");
-        driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]")).click();
-
-        // Wait for the page button to be clickable after login
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement pageButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[1]/button")));
-
-        // Assert that the page button is visible (login is successful)
-        assertTrue(pageButton.isDisplayed(), "The page button should be visible after login.");
-    }
-
-    
-    @Test
-    void checkCommentButtonClickable() {
+    private void loginAsAdmin() {
         loadHomePage();
         driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]")).sendKeys("admin@gmail.com");
         driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]")).sendKeys("admin1234");
         driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]")).click();
-
-        // Wait for the comment button to be clickable
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement commentButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[1]/div[2]/button[4]")));
-
-        // Assertion: Check if the comment button is clickable
-        assertTrue(commentButton.isEnabled(), "The comment button should be clickable.");
     }
 
     @Test
-    void checkCommentSectionVisibility() {
-        loadHomePage();
-        driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]")).sendKeys("admin@gmail.com");
-        driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]")).sendKeys("admin1234");
-        driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]")).click();
+    void testViewComments() {
+        loginAsAdmin();
 
-        // Wait for the comment button to be clickable
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement commentButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[1]/div[2]/button[4]")));
 
-        // Click the comment button
-        commentButton.click();
+        WebElement viewCommentsButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[4]/div[1]/div/div[1]/div[2]/button[4]")
+        ));
+        viewCommentsButton.click();
 
-        // Assertion: Check if the comment section is visible after clicking the comment button
-        WebDriverWait waiting = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement commentSection = waiting.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[1]/p/strong")));
-        
-        assertTrue(commentSection.isDisplayed(), "The comment section should be visible after clicking the comment button.");
+        assertTrue(viewCommentsButton.isDisplayed(), "The View Comments button should be visible.");
     }
 
     @Test
-    void checkCommentTextVisibility() {
-        loadHomePage();
-        driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]")).sendKeys("admin@gmail.com");
-        driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]")).sendKeys("admin1234");
-        driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]")).click();
+    void testViewLikes() {
+        loginAsAdmin();
 
-        // Wait for the comment button to be clickable
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement commentButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[1]/div[2]/button[4]")));
 
-        // Click the comment button
-        commentButton.click();
-
-        // Wait for the comment text to be visible
-        WebDriverWait waiting = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement commentText = waiting.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[1]/div[3]/div[2]/div[1]/p/strong")));
-
-        // Assertion: Check if the comment text is visible
-        assertTrue(commentText.isDisplayed(), "The comment text should be visible after the button click.");
+        WebElement viewLikes = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[4]/div[1]/div/div[1]/div[1]/p[1]")
+        ));
+        assertTrue(viewLikes.isDisplayed(), "Likes should be visible.");
     }
-    
-    
-    
-    @Test
-    void navigateToNextPageTest() {
-        loginTest(); // Reuse loginTest()
 
-        // Wait for the page button to be clickable and navigate
+    @Test
+    void testViewDislikes() {
+        loginAsAdmin();
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement pageButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[1]/button")));
-        pageButton.click();
 
-        // Assert that we navigated to the correct page (Check if heading is visible)
-        WebElement heading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[5]/div[2]/h4")));
-        assertNotEquals("User Comments", heading.getText(), "The heading should display 'User Comments' after navigating.");
+        WebElement viewDislikes = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[4]/div[1]/div/div[1]/div[1]/p[2]")
+        ));
+        assertTrue(viewDislikes.isDisplayed(), "Dislikes should be visible.");
     }
-    
+
     @Test
-    public void Dislike() {
-        loadHomePage();
+    void testViewAttendees() {
+        loginAsAdmin();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Log in
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("admin@gmail.com");
+        WebElement viewAttendees = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[4]/div[1]/div/div[1]/div[1]/p[3]")
+        ));
+        assertTrue(viewAttendees.isDisplayed(), "Attendees should be visible.");
+    }
 
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[2]")));
-        passwordField.sendKeys("admin1234");
+    @Test
+    void testViewNotifications() {
+        loginAsAdmin();
 
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/button[1]")));
-        loginButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        
-        WebElement dislikeButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("dislike_btn")));
-        
-        
+        WebElement viewNotifications = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[4]/div[2]/div[2]/ul/li[1]")
+        ));
+        assertTrue(viewNotifications.isDisplayed(), "Notifications should be visible.");
+    }
+
+    @Test
+    void testLikeButtonClickableAndClick() {
+        loginAsAdmin();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement likeButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[4]/div[1]/div/div[1]/div[2]/button[1]")
+        ));
+        assertTrue(likeButton.isEnabled(), "The Like button should be enabled.");
+
+        likeButton.click();
+
+        WebElement likeCount = driver.findElement(By.xpath("/html/body/div/div/div/div[4]/div[1]/div/div[1]/div[1]/p[1]"));
+        assertTrue(likeCount.getText().contains("1"), "The Like count should increase after clicking the Like button.");
+    }
+
+    @Test
+    void testDislikeButtonClickableAndClick() {
+        loginAsAdmin();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement dislikeButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.className("dislike_btn")
+        ));
+        assertTrue(dislikeButton.isEnabled(), "The Dislike button should be enabled.");
+
         dislikeButton.click();
-
-        WebElement updatedDislikeCount = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("dislike_btn")));
-        
-        
-        assertNotEquals(updatedDislikeCount.getText(), "Previous count", "Dislike count should update after clicking the button.");
     }
 
+    @Test
+    void LIKEButtonUsingClassNameAndClick() {
+        loginAsAdmin();
 
-        @AfterEach
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement likeButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.className("like_btn")
+        ));
+        assertTrue(likeButton.isEnabled(), "The Like button should be enabled.");
+
+        likeButton.click();
+    }
+    @AfterEach
     void tearDown() {
         if (driver != null) {
-            driver.quit();
+            driver.quit();  
         }
     }
 }
