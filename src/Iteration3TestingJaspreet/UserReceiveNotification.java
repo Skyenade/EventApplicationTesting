@@ -36,195 +36,136 @@ class UserReceiveNotification {
         driver.get("http://localhost:3000");
     }
 
-    @Test
-    public void userLikePostAndViewNotification() {
-        loadHomePage();
-
+    private void loginAsUser(String email, String password) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // Log in
         WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("jaspreet@gmail.com");
+        emailField.sendKeys(email);
 
         WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[2]")));
-        passwordField.sendKeys("123456");
+        passwordField.sendKeys(password);
 
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/button[1]")));
         loginButton.click();
-
-        // Like a post
-        WebElement likeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[4]/div[2]/div/div[4]/div[2]/button[1]")));
-        
-         assertTrue(likeButton.isEnabled(), "Like button should be enabled.");
-
-        likeButton.click();
     }
-    
+
     @Test
-    public void likebuttonnotdisable() {
+    void testViewFollowingDisplayAfterLogin() {
         loadHomePage();
+        loginAsUser("jaspreet@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // Log in
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("jaspreet@gmail.com");
-
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[2]")));
-        passwordField.sendKeys("123456");
-
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/button[1]")));
-        loginButton.click();
-
-        
-        WebElement likeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[4]/div[2]/div/div[1]/div[2]/button[1]")));
-        
-        // Assert that the like button is not disabled
-        assertFalse(likeButton.getAttribute("disabled") != null, "Like button should not be  disabled.");
-
-        likeButton.click();
+        WebElement followingDisplay = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[2]/div/h3")
+        ));
+        assertTrue(followingDisplay.isDisplayed(), "The 'Following' display should be visible after login.");
     }
-    
-    
+
     @Test
-    public void NotificationafterLikingPost() {
+    void testNavigateToFollowersPage() {
         loadHomePage();
+        loginAsUser("jaspreet@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // Log in
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("jaspreet@gmail.com");
+        WebElement followersButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[1]/div[1]/button[3]")
+        ));
+        followersButton.click();
 
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[2]")));
-        passwordField.sendKeys("123456");
-
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/button[1]")));
-        loginButton.click();
-
-        // Like a post (using new XPath)
-        WebElement likeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[4]/div[2]/div/div[10]/div[2]/button[1]")));
-
-        
-        
-        WebElement notificationMessageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[4]/div[3]/div/h3")));
-
-        
-        assertTrue(notificationMessageElement.isDisplayed(), "Notification should be visible after liking the post.");
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/MyFollowers"));
+        assertEquals("http://localhost:3000/MyFollowers", driver.getCurrentUrl(), "The URL should be MyFollowers.");
     }
-    
-    
+
     @Test
-    public void Dislike() {
+    void viewTotalFollowers() {
         loadHomePage();
+        loginAsUser("jaspreet@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // Log in
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("jaspreet@gmail.com");
+        WebElement followersButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[1]/div[1]/button[3]")
+        ));
+        followersButton.click();
 
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[2]")));
-        passwordField.sendKeys("123456");
+        WebElement totalFollowers = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[2]/div/p")
+        ));
 
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/button[1]")));
-        loginButton.click();
-
-        
-        WebElement dislikeButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("dislike_btn")));
-        
-        
-        dislikeButton.click();
-
-        WebElement updatedDislikeCount = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("dislike_btn")));
-        
-        
-        assertNotEquals(updatedDislikeCount.getText(), "Previous count", "Dislike count should update after clicking the button.");
+        assertTrue(totalFollowers.isDisplayed(), "The Total Followers display should be visible.");
+        String followersText = totalFollowers.getText();
+        assertNotNull(followersText, "The Total Followers display should contain text.");
+        System.out.println("Followers Display Text: " + followersText);
     }
-    
-    
+
     @Test
-    public void NotificationClickviewbutton() {
+    void testBackToHomeButton() {
         loadHomePage();
+        loginAsUser("jaspreet@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // Log in
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("jaspreet@gmail.com");
+        WebElement followersButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[1]/div[1]/button[3]")
+        ));
+        followersButton.click();
 
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[2]")));
-        passwordField.sendKeys("123456");
-
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/button[1]")));
-        loginButton.click();
-
-        // Find and click the View button
-        WebElement viewButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[4]/div[3]/div/ul/li[1]/button")));
-
-        // Assert that the notification is initially displayed
-        WebElement notification = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[4]/div[3]/div/ul/li[1]")));
-        assertTrue(notification.isDisplayed(), "Notification should be visible before clicking View.");
-
-        // Click the View button
-        viewButton.click();
-
-        // Wait for the notification to disappear
-        boolean notificationIsGone = wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[4]/div[3]/div/ul/li[1]")));
-
-        // Assert that the notification is no longer visible
-        assertTrue(notificationIsGone, "Notification should disappear after clicking View.");
+        WebElement backToHomeButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[1]/div[1]/button[1]")
+        ));
+        assertTrue(backToHomeButton.isDisplayed(), "The 'Back to Home' button should be visible.");
+        backToHomeButton.click();
     }
-    
-    
+
     @Test
-    public void NotificationnewFollowers() {
+    void viewLikes() {
         loadHomePage();
+        loginAsUser("jaspreet@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // Log in
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("jaspreet@gmail.com");
+        WebElement likeElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[4]/div[1]/div/div[1]/div[1]/p[1]")
+        ));
 
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[2]")));
-        passwordField.sendKeys("123456");
-
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/button[1]")));
-        loginButton.click();
-
-        
-        WebElement notification = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[2]/div/h3[1]\r\n"
-        		+ "")));
-        
-       
-        assertFalse(notification.isDisplayed(), "Notification should be visible when a new follower is added.");
+        assertTrue(likeElement.isDisplayed(), "The Likes display should be visible.");
+        String likeText = likeElement.getText();
+        assertNotNull(likeText, "The Likes display should contain text.");
+        System.out.println("Likes Display Text: " + likeText);
     }
-    
+
     @Test
-    public void Notificationfollowing() {
+    void viewDislikes() {
         loadHomePage();
+        loginAsUser("jaspreet@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // Log in
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("jaspreet@gmail.com");
+        WebElement dislikeElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[4]/div[1]/div/div[1]/div[1]/p[2]")
+        ));
 
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[2]")));
-        passwordField.sendKeys("123456");
-
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/form/button[1]")));
-        loginButton.click();
-
-        
-        WebElement notification = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[2]/div/h3[2]\r\n"
-        		+ "")));
-        
-        
-        assertFalse(notification.isDisplayed(), "Notification should be visible when a new follower is added.");
+        assertTrue(dislikeElement.isDisplayed(), "The Dislikes display should be visible.");
+        String dislikeText = dislikeElement.getText();
+        assertNotNull(dislikeText, "The Dislikes display should contain text.");
+        System.out.println("Dislikes Display Text: " + dislikeText);
     }
 
-    
-    
+    @Test
+    void viewNotification() {
+        loadHomePage();
+        loginAsUser("jaspreet@gmail.com", "123456");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+        WebElement notifButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.className("notif_viwedbtn")
+        ));
+        notifButton.click();
+
+        Boolean notifButtonAfterClick = wait.until(ExpectedConditions.invisibilityOf(notifButton));
+        assertTrue(notifButtonAfterClick, "Notification button should be disbale after clicking.");
+    }
 }
