@@ -19,7 +19,7 @@ class ModeratorRequestAdminAssistance {
 
     @BeforeEach
     void setUp() {
-        
+        // Initialize the WebDriver
         driver = new ChromeDriver();
     }
 
@@ -30,86 +30,214 @@ class ModeratorRequestAdminAssistance {
     }
 
     @Test
-    public void AdminRequestbyWritingPost() {
-        loadHomePage();
-
-        
+     void testRequestAdminAssistanceFlow() {
+       
+        driver.get("http://localhost:3000");
         WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]"));
         emailField.sendKeys("moderator@gmail.com");
-
         WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
         passwordField.sendKeys("123456");
-
         WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
         loginButton.click();
 
         
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement moderatorDashboard = wait.until(ExpectedConditions.elementToBeClickable(By.className("moderator-dashboard")));
-        moderatorDashboard.click();
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorHome"));
 
        
-        WebElement requestAdminAssistanceButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("requestAdminAssistanceButton")));
-        requestAdminAssistanceButton.click();
+        WebElement dashboardLink = driver.findElement(By.xpath("/html/body/div/div/div/div[4]/div[2]/div[1]/h4/a\r\n"
+        		+ "")); 
+        dashboardLink.click();
+
+       
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorDashboard"));
+
+        
+        WebElement requestAdminButton = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/button"));
+        requestAdminButton.click();
+
+       
+        WebElement textarea = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/textarea")));
+        assertTrue(textarea.isDisplayed(), "The text displayed visible.");
+
+        WebElement submitButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button"));
+        assertTrue(submitButton.isDisplayed(), "The Submit button should be visible.");
+    }
+        
+    
+    @Test
+     void testRequestAdminAssistanceByWritingPost() {
+        driver.get("http://localhost:3000");
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]"));
+        emailField.sendKeys("moderator@gmail.com");
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
+        passwordField.sendKeys("123456");
+        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
+        loginButton.click();
+
+        
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorHome"));
+
+        
+        WebElement dashboardLink = driver.findElement(By.xpath("/html/body/div/div/div/div[4]/div[2]/div[1]/h4/a")); 
+        dashboardLink.click();
+
+        
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorDashboard"));
+
+        
+        WebElement requestAdminButton = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/button"));
+        requestAdminButton.click();
 
         
         WebElement textarea = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/textarea")));
-        textarea.sendKeys("I am testing the assitance");
+        textarea.sendKeys("jaspreet admin request submission.");
 
         
         WebElement submitButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button"));
         submitButton.click();
 
         
-        try {
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            alert.accept();  
-            System.out.println("Alert accepted: Request submitted successfully!");
-        } catch (Exception e) {
-            System.out.println("No alert present or could not accept the alert.");
-        }
-    }
-    
-    @Test
-    public void AdminRequestwithoutwritingpost() {
-        loadHomePage();
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        alert.accept();
 
         
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorDashboard"));
+        assertEquals(driver.getCurrentUrl(), "http://localhost:3000/ModeratorDashboard", "modeartor dasboard.");
+    }
+
+    
+    @Test
+     void testNavigateToModeratorDashboard() {
+        
+    	driver.get("http://localhost:3000");
         WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]"));
         emailField.sendKeys("moderator@gmail.com");
-
         WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
         passwordField.sendKeys("123456");
-
         WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
         loginButton.click();
 
         
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement moderatorDashboard = wait.until(ExpectedConditions.elementToBeClickable(By.className("moderator-dashboard")));
-        moderatorDashboard.click();
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorHome"));
 
         
-        WebElement requestAdminAssistanceButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("requestAdminAssistanceButton")));
-        requestAdminAssistanceButton.click();
+        WebElement moderatorDashboardLink = driver.findElement(By.xpath("/html/body/div/div/div/div[4]/div[2]/div[1]/h4/a"));
+        moderatorDashboardLink.click();
+
+        
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorDashboard"));
+        assertEquals(driver.getCurrentUrl(), "http://localhost:3000/ModeratorDashboard", "moderator dashboard");
+    }
+    
+    @Test
+     void testNavigateToRequestAdminAssistancePage() {
+        
+        driver.get("http://localhost:3000");
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]"));
+        emailField.sendKeys("moderator@gmail.com");
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
+        passwordField.sendKeys("123456");
+        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
+        loginButton.click();
+
+        
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorHome"));
+
+        
+        WebElement moderatorDashboardLink = driver.findElement(By.xpath("/html/body/div/div/div/div[4]/div[2]/div[1]/h4/a"));
+        moderatorDashboardLink.click();
+
+        
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorDashboard"));
 
        
+        WebElement requestAdminAssistanceButton = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/button"));
+        requestAdminAssistanceButton.click();
+
+        
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/RequestAssistance"));
+        assertEquals(driver.getCurrentUrl(), "http://localhost:3000/RequestAssistance", "The URL should be the Request Admin Assistance page.");
+    }
+
+
+    @Test
+     void testSubmitButtonVisibility() {
+        
+        driver.get("http://localhost:3000");
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]"));
+        emailField.sendKeys("moderator@gmail.com");
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
+        passwordField.sendKeys("123456");
+        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
+        loginButton.click();
+
+        
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorHome"));
+
+        WebElement dashboardLink = driver.findElement(By.xpath("/html/body/div/div/div/div[4]/div[2]/div[1]/h4/a\r\n"
+        		+ "")); 
+        dashboardLink.click();
+
+       
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorDashboard"));
+
+        
+        WebElement requestAdminButton = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/button"));
+        requestAdminButton.click();
+
+       
+        WebElement submitButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/button")));
+        assertTrue(submitButton.isDisplayed(), "The Submit button should be visible.");
+    }
+
+    @Test
+     void testEmptyTextareaPreventsSubmission() {
+      
+        driver.get("http://localhost:3000");
+        WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]"));
+        emailField.sendKeys("moderator@gmail.com");
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
+        passwordField.sendKeys("123456");
+        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
+        loginButton.click();
+
+        
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorHome"));
+
+       
+        WebElement dashboardLink = driver.findElement(By.xpath("/html/body/div/div/div/div[4]/div[2]/div[1]/h4/a\r\n"
+        		+ "")); 
+        dashboardLink.click();
+
+        
+        wait.until(ExpectedConditions.urlToBe("http://localhost:3000/ModeratorDashboard"));
+
+        
+        WebElement requestAdminButton = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/button"));
+        requestAdminButton.click();
+
+        
+        WebElement textarea = driver.findElement(By.xpath("/html/body/div/div/div/form/textarea"));
+
+        
         WebElement submitButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button"));
         submitButton.click();
 
-       
-
-        String actualValue = "please fill out this field";
-        String expectedValue ="Give the reason for admin assitance";
-        assertEquals(expectedValue, actualValue, "The text field is missing.");
+        
+        String validationMessage = textarea.getAttribute("validationMessage");
+        assertEquals("Please fill out this field.", validationMessage, "Validation message should indicate the field is required.");
     }
-    
     @AfterEach
     void tearDown() {
-        
-        if (driver != null) {
-            driver.quit();
-        }
+        driver.quit();
     }
+    
+         
 
 }
