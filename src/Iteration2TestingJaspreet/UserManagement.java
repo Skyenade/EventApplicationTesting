@@ -18,248 +18,310 @@ import org.junit.jupiter.api.Test;
 
 class UserManagement {
 
-	WebDriver driver;
+	private WebDriver driver;
 
-    @BeforeEach
-    void setUp() {
-        
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();  
+	@BeforeEach
+	void setUp() {
+		driver = new ChromeDriver();
+	}
+
+	
+    private void loadHomePage() {
+        driver.get("http://localhost:3000");
+        driver.manage().window().maximize();
     }
 
-    @AfterEach
-    void tearDown() {
-        if (driver != null) {
-            driver.quit();  
+      @Test
+     void AdminDashboardPage() {
+        loadHomePage();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
+        emailField.sendKeys("admin@gmail.com");
+
+        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
+        passwordField.sendKeys("admin1234");
+
+        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
+        loginButton.click();
+        
+        WebDriverWait waiting = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+
+        WebElement Admindashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[4]/div[2]/div[1]/h4/a\r\n"
+        		+ "")));
+        Admindashboard.click();
+
+        WebDriverWait waitingtodashboardpage = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        WebElement Usermanagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div/div[1]/a\r\n"
+        		+ "")));
+        Usermanagement.click();
+        
+        
+
+        
+        
+
+    }
+    
+    
+    public static String getBaseURL(String fullUrl) {
+        
+        if (fullUrl.contains("/UserManagement")) {
+            return fullUrl.split("/UserManagement")[0] + "/UserManagement"; 
+        } else {
+            return fullUrl;
         }
     }
 
-    private void loadHomePage() {
-        driver.get("http://localhost:3000");
+
+    
+    @Test
+     void testAdminHomepageLink() {
+        AdminDashboardPage();
+        String url = driver.getCurrentUrl();
+        System.out.println("Current URL: " + url); 
+        
+       
+        String expectedUrl = "http://localhost:3000/UserManagement";
+        
+        
+        String baseURL = getBaseURL(url);
+        
+                assertEquals(expectedUrl, baseURL);        
+    }
+    
+    @Test
+     void  Testinguseraccount(){
+    	AdminDashboardPage();
+    WebElement crateuseraccount = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[1]/button\r\n"
+    		+ ""));	
+    crateuseraccount.click();
+    String ExpectedLink = "http://localhost:3000/CreateUser";
+    String ActualUrl = driver.getCurrentUrl();
+    assertEquals(ExpectedLink,ActualUrl);
+    driver.navigate().back();
+    }
+    
+    
+    @Test
+     void Tablename() {
+    	AdminDashboardPage();
+        WebElement userTable = new WebDriverWait(driver, Duration.ofSeconds(10))
+            .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/div[2]/div[2]/h2")));
+        assertTrue(userTable.isDisplayed());
     }
 
     @Test
-    public void AdminViewUseraccount() {
-        loadHomePage();
-
-        
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("admin@gmail.com");
-
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
-        passwordField.sendKeys("admin1234");
-
-        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
-        loginButton.click();
-
-      
-        WebElement admindashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[3]/div[1]/h4/a")));
-        admindashboard.click();
-
-        
-        WebElement usermanagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div/div[1]/a")));
-
-        
-        try {
-            usermanagement.click();
-        } catch (Exception e) {
-        }}
-    
-    @Test
-    public void ModeratorSuspendaccount() {
-        loadHomePage();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("admin@gmail.com");
-
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
-        passwordField.sendKeys("admin1234");
-
-        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
-        loginButton.click();
-
-        WebElement admindashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[3]/div[1]/h4/a")));
-        admindashboard.click();
-
-        WebElement usermanagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div/div[1]/a")));
-        usermanagement.click();
-
-        WebElement suspendaccount = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[3]/td[4]/button[2]\r\n"
-        		+ ""
-        		+ "")));
-        suspendaccount.click();
-
-        
-        try {
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            alert.accept(); // Click "OK" on the alert
-            System.out.println("Alert accepted: Request submitted successfully!");
-        } catch (Exception e) {
-            System.out.println("No alert present or could not accept the alert.");
-        }}
-    
-    @Test
-    public void ModeratorRestoreaccount() {
-        loadHomePage();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("admin@gmail.com");
-
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
-        passwordField.sendKeys("admin1234");
-
-        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
-        loginButton.click();
-
-        WebElement admindashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[3]/div[1]/h4/a")));
-        admindashboard.click();
-
-        WebElement usermanagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div/div[1]/a")));
-        usermanagement.click();
-
-        WebElement Restoreaccount = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[3]/td[4]/button[4]\r\n"
-        		+ "")));
-        Restoreaccount.click();
-
+     void AssignUserTOModerator() {
+        AdminDashboardPage();
+        WebElement jaspreetRow = new WebDriverWait(driver, Duration.ofSeconds(10))
+            .until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]\r\n"
+            		+ "")));
+        WebElement assignToModerator = jaspreetRow.findElement(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[3]/input[2]\r\n"
+        		+ "")); // Use relative XPath for better stability
+        assignToModerator.click();
+        assertTrue(assignToModerator.isSelected());
     }
-    
 
-    
     @Test
-    public void ModeratorDeleteaccount() {
-        loadHomePage();
+     void AssignModeratorToUser() {
+        AdminDashboardPage();
+        WebElement jaspreetRow = new WebDriverWait(driver, Duration.ofSeconds(10))
+            .until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]\r\n"
+            		+ "")));
+        WebElement selectUser = jaspreetRow.findElement(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[3]/input[1]\r\n"
+        		+ "")); 
+        selectUser.click();
+        assertTrue(selectUser.isSelected());
+    }
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("admin@gmail.com");
-
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
-        passwordField.sendKeys("admin1234");
-
-        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
-        loginButton.click();
-
-        WebElement admindashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[3]/div[1]/h4/a")));
-        admindashboard.click();
-
-        WebElement usermanagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div/div[1]/a")));
-        usermanagement.click();
-
-        WebElement deleteaccount = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[3]/td[4]/button[3]\r\n"
-        		+ "")));
-        deleteaccount.click();
-
-        
-        try {
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            alert.accept(); // Click "OK" on the alert
-            System.out.println("Alert accepted: Request submitted successfully!");
-        } catch (Exception e) {
-            System.out.println("No alert present or could not accept the alert.");
-        }}
-    
-    
     @Test
-    public void Moderatoreditaccount() {
-        loadHomePage();
-
+     void EditProfile() {
+        AdminDashboardPage();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("admin@gmail.com");
-
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
-        passwordField.sendKeys("admin1234");
-
-        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
-        loginButton.click();
-
-        WebElement admindashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[3]/div[1]/h4/a")));
-        admindashboard.click();
-
-        WebElement usermanagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div/div[1]/a")));
-        usermanagement.click();
-
-        WebElement editaccount = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[3]/td[4]/button[1]\r\n"
-        		+ "")));
-        editaccount.click();
 
        
-        try {
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            alert.accept(); 
-            System.out.println("Alert accepted: Request submitted successfully!");
-        } catch (Exception e) {
-            System.out.println("No alert present or could not accept the alert.");
-        }}
+        wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button[1]")
+        )).click();
+
+        
+        WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]/input")
+        ));
+        usernameField.clear(); 
+        usernameField.sendKeys("jaguar");
+
+        
+        WebElement bioField = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/input\r\n"
+        		+ ""));
+        bioField.clear();
+        bioField.sendKeys("15sep");
+
+        
+        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button")).click();
+
+        
+        String updatedUsername = driver.findElement(
+            By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]/input")
+        ).getAttribute("value");
+        assertEquals("jaguar", updatedUsername);
+        
+    }
 
     
     @Test
-    public void AssignModeratorRole() {
-        loadHomePage();
-
+     void alertdismiss() {
+        AdminDashboardPage();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
         
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("admin@gmail.com");
+        wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button[1]")
+        )).click();
 
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
-        passwordField.sendKeys("admin1234");
+        
+        WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]/input")
+        ));
+        usernameField.clear();
+        usernameField.sendKeys("jaguar");
 
-        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
-        loginButton.click();
+        
+        WebElement bioField = driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/input"));
+        bioField.clear();
+        bioField.sendKeys("15sep");
 
-        WebElement admindashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[3]/div[1]/h4/a")));
-        admindashboard.click();
+        
+        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button")).click();
 
-        WebElement usermanagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div/div[1]/a")));
-        usermanagement.click();
-
-        WebElement moderatorrole = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[4]/td[3]/input[2]\r\n"
-        		+ ""
-        		+ "")));
-        moderatorrole.click();
-
+        
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        assertEquals("User updated successfully!", alert.getText()); 
+        alert.accept();  
     }
     
     
     @Test
-    public void AssignUserRole() {
-        loadHomePage();
-
+     void suspendaccountCancel() {
+        AdminDashboardPage();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
         
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div/form/input[1]")));
-        emailField.sendKeys("admin@gmail.com");
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]\r\n"
+                		+ "")
+            )).click();
 
-        WebElement passwordField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[2]"));
-        passwordField.sendKeys("admin1234");
+       
+        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement suspendButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button[2]")));
+        suspendButton.click();
 
-        WebElement loginButton = driver.findElement(By.xpath("/html/body/div/div/div/form/button[1]"));
-        loginButton.click();
+                Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        assertEquals("Are you sure you want to suspend this user?", alert.getText());
 
-        WebElement admindashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[3]/div[3]/div[1]/h4/a")));
-        admindashboard.click();
-
-        WebElement usermanagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div/div[1]/a")));
-        usermanagement.click();
-
-        WebElement userrole = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[4]/td[3]/input[1]\r\n"
-        		+ "")));
-        userrole.click();
-
+            alert.dismiss();
     }
 
+    @Test
+     void suspendaccountOK() {
+        AdminDashboardPage();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]")
+            )).click();
+
+        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement suspendButton = wait2.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button[2]")));
+        suspendButton.click();
+
+        Alert alert = wait2.until(ExpectedConditions.alertIsPresent());
+        assertEquals("Are you sure you want to suspend this user?", alert.getText());
+
+        alert.accept();
+    }
     
+    @Test
+     void restoreAccount() {
+        AdminDashboardPage();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement restoreButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button[4]")
+        ));
+        restoreButton.click();
+
+        WebElement restoredMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[5][contains(text(), 'active')]")
+        ));
+
+        assertTrue(restoredMessage.isDisplayed());
+    }
     
+    @Test
+     void deleteAccountCancel() {
+    	AdminDashboardPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+       
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]")
+        )).click();
+
+        
+        WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button[3]")
+        ));
+        deleteButton.click();
+
+        
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        assertEquals("Are you sure you want to delete this user?", alert.getText());
+
+        
+        alert.dismiss();
+    }
     
+    @Test
+     void deleteAccountOK() {
+        AdminDashboardPage();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[1]")
+        )).click();
+
+        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement deleteButton = wait2.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[10]/td[4]/button[3]")
+        ));
+        deleteButton.click();
+
+        Alert alert = wait2.until(ExpectedConditions.alertIsPresent());
+        assertEquals("Are you sure you want to delete this user?", alert.getText());
+
+        alert.accept();
+    }
     
-    
-}
+
+    @AfterEach
+    void tearDown() {
+        
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+
+
+
+
+
+
+   }
