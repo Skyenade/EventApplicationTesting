@@ -115,7 +115,7 @@ class Adminloginaccount {
 
     
     @Test
-    public void Adminhometitlecheck() {
+     void Adminhometitlecheck() {
                loadHomePage();
 
         WebElement emailField = driver.findElement(By.xpath("/html/body/div/div/div/form/input[1]"));
