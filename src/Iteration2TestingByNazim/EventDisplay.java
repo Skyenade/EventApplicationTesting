@@ -1,7 +1,5 @@
 package Iteration2TestingByNazim;
 
-public class EventDisplay {
-    
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;

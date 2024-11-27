@@ -1,4 +1,4 @@
-package Iteration2TestsMaina.Iteration3MNazim;
+package Iteration3Nazim;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

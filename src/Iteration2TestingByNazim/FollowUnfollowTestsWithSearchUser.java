@@ -1,4 +1,4 @@
-package pack1;
+package Iteration2TestingByNazim;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
@@ -44,6 +44,7 @@ public class FollowUnfollowTestsWithSearchUser {
     @Test
     void testFollowUnfollowBySearchUser() {
         loadLoginPage();
+
         login("user@gmail.com", "123456");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));

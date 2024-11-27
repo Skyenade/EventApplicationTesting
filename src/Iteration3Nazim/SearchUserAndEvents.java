@@ -1,4 +1,4 @@
-package Iteration2TestsMaina.Iteration3MNazim;
+package Iteration3Nazim;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
